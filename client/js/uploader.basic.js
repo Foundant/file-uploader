@@ -26,6 +26,7 @@
 
             validation: {
                 allowedExtensions: [],
+                badExtensions: [],
                 sizeLimit: 0,
                 minSizeLimit: 0,
                 itemLimit: 0,
