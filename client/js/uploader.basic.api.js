@@ -1339,14 +1339,23 @@
             return valid;
         },
 
-        _formatSize: function(bytes){
-            var i = -1;
-            do {
-                bytes = bytes / 1000;
-                i++;
-            } while (bytes > 999);
+        _formatSize: function (bytes)
+        {
+        	var iec = this._options.text.useIEC;
+        	var div = iec ? 1024 : 1000;
+        	var cut = iec ? 1023 : 999;
 
-            return Math.max(bytes, 0.1).toFixed(1) + this._options.text.sizeSymbols[i];
+        	var i = -1;
+		    do
+		    {
+			    bytes = bytes / div;
+			    i++;
+		    }
+		    while (bytes > cut);
+
+	        var symbol = iec ? this._options.text.IECSymbols[i] : this._options.text.sizeSymbols[i];
+
+	        return Math.max(bytes, 0.1).toFixed(1) + symbol;
         },
 
         _wrapCallbacks: function() {
