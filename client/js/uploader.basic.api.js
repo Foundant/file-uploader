@@ -1270,7 +1270,7 @@
          * @private
          */
         _itemError: function(code, maybeNameOrNames, item) {
-            var message = this._options.messages[code],
+				var message = this._options.messages[code],
                 allowedExtensions = [],
                 names = [].concat(maybeNameOrNames),
                 name = names[0],
@@ -1296,6 +1296,7 @@
             r("{extensions}", extensionsForMessage);
             r("{sizeLimit}", this._formatSize(validationBase.sizeLimit));
             r("{minSizeLimit}", this._formatSize(validationBase.minSizeLimit));
+	        r("{size}", this._formatSize(item.size));
 
             placeholderMatch = message.match(/(\{\w+\})/g);
             if (placeholderMatch !== null) {
