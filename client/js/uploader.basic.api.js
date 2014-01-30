@@ -1362,7 +1362,7 @@
             var invalid = false;
 
             if (!bad.length) {
-                return true;
+                return false;
             }
 
             qq.each(bad, function (idx, badExt) {
