@@ -27,6 +27,7 @@
             validation: {
                 allowedExtensions: [],
                 badExtensions: [],
+                badCharacters: [],
                 sizeLimit: 0,
                 minSizeLimit: 0,
                 itemLimit: 0,
@@ -65,6 +66,7 @@
 
             messages: {
                 typeError: "{file} has an invalid extension. Valid extension(s): {extensions}.",
+                charError: "{file} has an invalid characters and cannot be uploaded. Invalid characters include {badCharacters}",
                 sizeError: "{file} is too large, maximum file size is {sizeLimit}.",
                 minSizeError: "{file} is too small, minimum file size is {minSizeLimit}.",
                 emptyError: "{file} is empty, please select files again without it.",

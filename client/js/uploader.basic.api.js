@@ -1230,6 +1230,11 @@
                 return validityChecker.failure();
             }
 
+            if (qq.isFileOrInput(file) && this._isBadCharacters(validationBase.badCharacters, name)) {
+                this._itemError("charError", name, file);
+                return validityChecker.failure();
+            }
+
             if (size === 0) {
                 this._itemError("emptyError", name, file);
                 return validityChecker.failure();
@@ -1278,11 +1283,12 @@
                 var message = this._options.messages[code],
                 allowedExtensions = [],
                 badExtensions = [],
+                badCharacters = [],
                 names = [].concat(maybeNameOrNames),
                 name = names[0],
                 buttonId = this._getButtonId(item),
                 validationBase = this._getValidationBase(buttonId),
-                extensionsForMessage, badExtensionsForMessage, placeholderMatch;
+                extensionsForMessage, badExtensionsForMessage, placeholderMatch, badCharactersForMessage;
 
             function r(name, replacement){ message = message.replace(name, replacement); }
 
@@ -1306,12 +1312,20 @@
                 }
             });
 
+            qq.each(validationBase.badCharacters, function(idx, badCharacter) {
+                if (qq.isString(badCharacter)){
+                    badCharacters.push(badCharacter);
+                }
+            });
+
             extensionsForMessage = allowedExtensions.join(", ").toLowerCase();
             badExtensionsForMessage = badExtensions.join(", ").toLowerCase();
+            badCharactersForMessage = badCharacters.join("").toLowerCase();
 
             r("{file}", this._options.formatFileName(name));
             r("{extensions}", extensionsForMessage);
             r("{badextensions}", badExtensionsForMessage);
+            r("{badCharacters}", badCharactersForMessage);
             r("{sizeLimit}", this._formatSize(validationBase.sizeLimit));
             r("{minSizeLimit}", this._formatSize(validationBase.minSizeLimit));
             r("{size}", this._formatSize(item.size));
@@ -1375,6 +1389,25 @@
                     var extRegex = new RegExp("\\." + badExt + "$", "i");
 
                     if (fileName.match(extRegex) != null) {
+                        invalid = true;
+                        return false;
+                    }
+                }
+            });
+
+            return invalid;
+        },
+
+        _isBadCharacters: function(bad, fileName) {
+            var invalid = false;
+
+            if (!bad.length){
+                return false;
+            }
+
+            qq.each(bad, function(idx, badChar) {
+                if (qq.isString(badChar)){
+                    if (fileName.indexOf(badChar) > -1) {
                         invalid = true;
                         return false;
                     }
